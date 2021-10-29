@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MyProject1</string>
+    <string name="create_project_text">Создать проект</string>
 </resources>
