@@ -6,9 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.myproject1.R
+import com.example.myproject1.databinding.LibraryFragmentBinding
 
 
 class LibraryFragment : Fragment() {
+    private var _binding: LibraryFragmentBinding? = null
+
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,7 +22,9 @@ class LibraryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_library, container, false)
+        _binding = LibraryFragmentBinding.inflate(inflater, container, false)
+        val root: View = binding.root
+        return root
     }
 
 }
