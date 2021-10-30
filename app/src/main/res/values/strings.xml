@@ -3,4 +3,6 @@
     <string name="create_project_text">Создать проект</string>
     <string name="projects_text">Проекты</string>
     <string name="project_img_desc">Изображение проекта</string>
+    <string name="undo">undo</string>
+    <string name="redo">redo</string>
 </resources>
