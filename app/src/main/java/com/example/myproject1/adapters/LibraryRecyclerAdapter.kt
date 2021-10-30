@@ -10,7 +10,7 @@ import com.example.myproject1.databinding.AddProjectLayoutBinding
 import com.example.myproject1.databinding.PlateBinding
 
 
-class LibraryRecyclerAdapter(val onItemClickListener: OnItemClickListener): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class LibraryRecyclerAdapter(private val onItemClickListener: OnItemClickListener): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
         const val VIEW_TYPE_ONE = 1
         const val VIEW_TYPE_TWO = 2
@@ -32,10 +32,10 @@ class LibraryRecyclerAdapter(val onItemClickListener: OnItemClickListener): Recy
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if(position == 0) {
-            (holder as AddProjectViewHolder).bind()
+            (holder as AddProjectViewHolder).bind(onItemClickListener)
 
         } else {
-            (holder as ProjectViewHolder).bind(position)
+            (holder as ProjectViewHolder).bind(position, onItemClickListener)
         }
     }
 
@@ -51,7 +51,7 @@ class LibraryRecyclerAdapter(val onItemClickListener: OnItemClickListener): Recy
     }
 
     private inner class ProjectViewHolder(private val plateBinding: PlateBinding): RecyclerView.ViewHolder(plateBinding.root) {
-        fun bind(position: Int) = with(plateBinding) {
+        fun bind(position: Int, onItemClickListener: OnItemClickListener) = with(plateBinding) {
             plateBinding.root.setOnClickListener {
                 onItemClickListener.onItemClick(position)
             }
@@ -59,7 +59,7 @@ class LibraryRecyclerAdapter(val onItemClickListener: OnItemClickListener): Recy
     }
 
     private inner class AddProjectViewHolder(private val addProjectLayoutBinding: AddProjectLayoutBinding): RecyclerView.ViewHolder(addProjectLayoutBinding.root) {
-        fun bind() = with(addProjectLayoutBinding) {
+        fun bind(onItemClickListener: OnItemClickListener) = with(addProjectLayoutBinding) {
             addProjectLayoutBinding.root.setOnClickListener {
                 onItemClickListener.onItemClick(0)
             }
