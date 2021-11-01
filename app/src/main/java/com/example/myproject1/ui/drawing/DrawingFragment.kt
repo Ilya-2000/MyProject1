@@ -6,11 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import com.example.myproject1.CustomCanvas
 import com.example.myproject1.R
 import com.example.myproject1.databinding.DrawingFragmentBinding
 
 
 class DrawingFragment : Fragment() {
+    private lateinit var customCanvas: CustomCanvas
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,7 +23,9 @@ class DrawingFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        customCanvas = CustomCanvas(context, 30f)
         val binding = DrawingFragmentBinding.inflate(inflater, container, false)
+        binding.canvasLayout.addView(customCanvas)
         return binding.root
     }
 

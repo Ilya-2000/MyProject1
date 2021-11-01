@@ -11,8 +11,8 @@ import android.view.ViewConfiguration
 
 class CustomCanvas(context: Context?, userStrokeWidth: Float) : View(context) {
     private lateinit var canvas: Canvas
-    private lateinit var paint: Paint
-    private lateinit var path: Path
+    private var paint: Paint
+    private var path: Path
     private val paths: ArrayList<Path> = ArrayList<Path>()
     private val undonePaths: ArrayList<Path> = ArrayList<Path>()
     private val touchTolerance = ViewConfiguration.get(context).scaledTouchSlop
@@ -22,18 +22,22 @@ class CustomCanvas(context: Context?, userStrokeWidth: Float) : View(context) {
     private var eventY = 0f
 
     init {
-        paint.apply {
+        paint = Paint().apply {
             color = Color.BLACK
             isAntiAlias = true
             isDither = true
             style = Paint.Style.STROKE
             strokeWidth = userStrokeWidth
         }
+        path = Path()
     }
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-        canvas?.drawPath(path, paint)
+        for (p in paths) {
+            canvas?.drawPath(p, paint)
+        }
+
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -54,16 +58,20 @@ class CustomCanvas(context: Context?, userStrokeWidth: Float) : View(context) {
             path.quadTo(curX, curY, (eventX + curX) / 2, (eventY + curY) / 2)
             curX = eventX
             curY = eventY
-            canvas = Canvas()
+            /*canvas = Canvas()
             canvas.drawPath(path, paint)
-            paths.add(path)
+            paths.add(path)*/
         }
         invalidate()
     }
 
     fun touchUp() {
+        path.lineTo(curX, curY)
+        canvas = Canvas()
+        canvas.drawPath(path,paint)
+        path = Path()
         paths.add(path)
-        path.reset()
+
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
