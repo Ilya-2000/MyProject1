@@ -34,6 +34,12 @@ class DrawingFragment : Fragment() {
         binding.redoImageButton.setOnClickListener {
             customCanvas.onRedoClick()
         }
+        binding.brushBtn.setOnClickListener {
+            customCanvas.selectBrush()
+        }
+        binding.eraserBtn.setOnClickListener {
+            customCanvas.selectEraser()
+        }
         return binding.root
     }
 

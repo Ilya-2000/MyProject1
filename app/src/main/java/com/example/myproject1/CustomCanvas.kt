@@ -1,55 +1,67 @@
 package com.example.myproject1
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.Path
+import android.graphics.*
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewConfiguration
 
 class CustomCanvas(context: Context?, userStrokeWidth: Float) : View(context) {
-    private var canvas: Canvas
     private var path: Path
-    private val paths: ArrayList<Path> = ArrayList<Path>()
-    private val undonePaths: ArrayList<Path> = ArrayList<Path>()
+    private val paths: ArrayList<PathModel> = ArrayList<PathModel>()
+    private val undonePaths: ArrayList<PathModel> = ArrayList<PathModel>()
     private val touchTolerance = ViewConfiguration.get(context).scaledTouchSlop
     private var curX = 0f
     private var curY = 0f
     private var eventX = 0f
     private var eventY = 0f
+    private var selectColor: Int
+    private var selectWidth: Float
+    private var paint: Paint
+    private lateinit var extraBitmap: Bitmap
 
-    private var paint = Paint().apply {
-        color = Color.BLACK
-        isAntiAlias = true
-        isDither = true
-        style = Paint.Style.STROKE
-        strokeJoin = Paint.Join.ROUND
-        strokeCap = Paint.Cap.ROUND
-        strokeWidth = userStrokeWidth
-        }
+
 
     init {
+        selectColor = Color.BLACK
+        selectWidth = 30f
         path = Path()
-        paths.add(path)
-        canvas = Canvas()
+        paint = Paint().apply {
+            color = selectColor
+            isAntiAlias = true
+            isDither = true
+            style = Paint.Style.STROKE
+            strokeJoin = Paint.Join.ROUND
+            strokeCap = Paint.Cap.ROUND
+            strokeWidth = userStrokeWidth
+        }
     }
+
+
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
+        canvas?.save()
         for (p in paths) {
-            canvas?.drawPath(p, paint)
+            paint.color = p.color
+            paint.strokeWidth = p.width
+            canvas?.drawPath(p.path, paint)
+            //canvas?.drawBitmap(extraBitmap, 0f, 0f, null)
         }
 
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
+        extraBitmap = Bitmap.createBitmap(w,h,Bitmap.Config.ARGB_8888)
     }
 
     private fun touchStart() {
+
+        path = Path()
+        val pathModel = PathModel(selectColor, selectWidth, path)
+        paths.add(pathModel)
         path.reset()
         path.moveTo(eventX, eventY)
         curX = eventX
@@ -69,10 +81,8 @@ class CustomCanvas(context: Context?, userStrokeWidth: Float) : View(context) {
     }
 
     private fun touchUp() {
-        canvas = Canvas()
-        canvas.drawPath(path,paint)
-        path = Path()
-        paths.add(path)
+        //path.lineTo(curX, curY)
+
 
     }
 
@@ -100,6 +110,14 @@ class CustomCanvas(context: Context?, userStrokeWidth: Float) : View(context) {
             paths.add(undonePaths.removeAt(undonePaths.size - 1))
             invalidate()
         }
+    }
+
+    fun selectBrush() {
+        selectColor = Color.BLACK
+    }
+    fun selectEraser() {
+        selectColor = Color.WHITE
+
     }
 
 
