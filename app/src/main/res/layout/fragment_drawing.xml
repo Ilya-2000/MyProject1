@@ -56,17 +56,20 @@
                 android:id="@+id/drawing_tools_group"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/white">
+                android:background="@color/white"
+                app:singleSelection="true">
                 <Button
                     android:id="@+id/brush_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:icon="@drawable/ic_baseline_brush_48" />
+                    app:icon="@drawable/ic_baseline_brush_48"
+                    style="@style/Widget.App.Button.OutlinedButton.IconOnly"/>
                 <Button
                     android:id="@+id/eraser_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:icon="@drawable/ic_eraser_icon"/>
+                    app:icon="@drawable/ic_eraser_icon"
+                    style="@style/Widget.App.Button.OutlinedButton.IconOnly"/>
             </com.google.android.material.button.MaterialButtonToggleGroup>
             <!--<ImageButton
                 android:id="@+id/eraser_btn"
