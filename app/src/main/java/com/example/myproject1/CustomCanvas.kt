@@ -10,8 +10,7 @@ import android.view.View
 import android.view.ViewConfiguration
 
 class CustomCanvas(context: Context?, userStrokeWidth: Float) : View(context) {
-    private lateinit var canvas: Canvas
-    private var paint: Paint
+    private var canvas: Canvas
     private var path: Path
     private val paths: ArrayList<Path> = ArrayList<Path>()
     private val undonePaths: ArrayList<Path> = ArrayList<Path>()
@@ -21,15 +20,20 @@ class CustomCanvas(context: Context?, userStrokeWidth: Float) : View(context) {
     private var eventX = 0f
     private var eventY = 0f
 
-    init {
-        paint = Paint().apply {
-            color = Color.BLACK
-            isAntiAlias = true
-            isDither = true
-            style = Paint.Style.STROKE
-            strokeWidth = userStrokeWidth
+    private var paint = Paint().apply {
+        color = Color.BLACK
+        isAntiAlias = true
+        isDither = true
+        style = Paint.Style.STROKE
+        strokeJoin = Paint.Join.ROUND
+        strokeCap = Paint.Cap.ROUND
+        strokeWidth = userStrokeWidth
         }
+
+    init {
         path = Path()
+        paths.add(path)
+        canvas = Canvas()
     }
 
     override fun onDraw(canvas: Canvas?) {
@@ -44,29 +48,26 @@ class CustomCanvas(context: Context?, userStrokeWidth: Float) : View(context) {
         super.onSizeChanged(w, h, oldw, oldh)
     }
 
-    fun touchStart() {
+    private fun touchStart() {
         path.reset()
         path.moveTo(eventX, eventY)
         curX = eventX
         curY = eventY
     }
 
-    fun touchMove() {
+    private fun touchMove() {
         val dx = kotlin.math.abs(eventX - curX)
         val dy = kotlin.math.abs(eventY - curY)
         if (dx >= touchTolerance || dy >= touchTolerance) {
             path.quadTo(curX, curY, (eventX + curX) / 2, (eventY + curY) / 2)
             curX = eventX
             curY = eventY
-            /*canvas = Canvas()
-            canvas.drawPath(path, paint)
-            paths.add(path)*/
+
         }
         invalidate()
     }
 
-    fun touchUp() {
-        path.lineTo(curX, curY)
+    private fun touchUp() {
         canvas = Canvas()
         canvas.drawPath(path,paint)
         path = Path()
