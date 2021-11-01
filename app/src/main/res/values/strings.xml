@@ -5,4 +5,6 @@
     <string name="project_img_desc">Изображение проекта</string>
     <string name="undo">undo</string>
     <string name="redo">redo</string>
+    <string name="brush">Brush</string>
+    <string name="erase">Erase</string>
 </resources>
