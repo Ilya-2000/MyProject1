@@ -26,6 +26,14 @@ class DrawingFragment : Fragment() {
         customCanvas = CustomCanvas(context, 30f)
         val binding = DrawingFragmentBinding.inflate(inflater, container, false)
         binding.canvasLayout.addView(customCanvas)
+
+        binding.undoImageButton.setOnClickListener {
+            customCanvas.onUndoClick()
+        }
+
+        binding.redoImageButton.setOnClickListener {
+            customCanvas.onRedoClick()
+        }
         return binding.root
     }
 

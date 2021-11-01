@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewConfiguration
@@ -85,6 +86,20 @@ class CustomCanvas(context: Context?, userStrokeWidth: Float) : View(context) {
             MotionEvent.ACTION_UP -> touchUp()
         }
         return true
+    }
+
+    fun onUndoClick() {
+        if (paths.size > 0) {
+            undonePaths.add(paths.removeAt(paths.size - 1))
+            invalidate()
+        }
+    }
+
+    fun onRedoClick() {
+        if (undonePaths.size > 0) {
+            paths.add(undonePaths.removeAt(undonePaths.size - 1))
+            invalidate()
+        }
     }
 
 
