@@ -17,8 +17,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/project_mode_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone">
+            android:layout_height="match_parent">
 
             <ImageView
                 android:id="@+id/plate_img"
@@ -42,6 +41,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:text="@{name}"
+
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"

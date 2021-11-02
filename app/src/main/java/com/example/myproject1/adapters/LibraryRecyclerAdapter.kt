@@ -1,18 +1,20 @@
 package com.example.myproject1.adapters
 
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.myproject1.R
 import com.example.myproject1.data.Project
 import com.example.myproject1.databinding.AddProjectLayoutBinding
 import com.example.myproject1.databinding.PlateBinding
 
 
-class LibraryRecyclerAdapter(private val projectList: ArrayList<Project>, private val onItemClickListener: OnItemClickListener): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class LibraryRecyclerAdapter(private val projectList: ArrayList<Project>, private val onItemClickListener: OnItemClickListener, private val context: Context): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
         const val VIEW_TYPE_ONE = 1
         const val VIEW_TYPE_TWO = 2
@@ -56,6 +58,10 @@ class LibraryRecyclerAdapter(private val projectList: ArrayList<Project>, privat
     private inner class ProjectViewHolder(private val plateBinding: PlateBinding): RecyclerView.ViewHolder(plateBinding.root) {
         fun bind(position: Int, onItemClickListener: OnItemClickListener, item: Project) = with(plateBinding) {
             plateBinding.name = item.name
+            Log.d("PlateName", item.name)
+            Glide.with(context)
+                .load(item.path + "/" + item.id)
+                .into(plateBinding.plateImg)
             plateBinding.root.setOnClickListener {
                 onItemClickListener.onItemClick(position, projectList)
             }

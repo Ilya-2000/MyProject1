@@ -91,7 +91,7 @@ class LibraryFragment : Fragment(), LibraryRecyclerAdapter.OnItemClickListener {
     }
 
     private fun setupUI() {
-        adapter = LibraryRecyclerAdapter(arrayListOf(), this)
+        adapter = LibraryRecyclerAdapter(arrayListOf(), this, requireContext())
     }
 
 
