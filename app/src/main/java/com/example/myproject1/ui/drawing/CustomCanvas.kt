@@ -1,14 +1,11 @@
-package com.example.myproject1
+package com.example.myproject1.ui.drawing
 
 import android.content.Context
 import android.graphics.*
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewConfiguration
-import java.io.File
-import java.io.FileOutputStream
-import java.lang.Exception
+import com.example.myproject1.models.PathModel
 
 class CustomCanvas(context: Context?, userStrokeWidth: Float) : View(context) {
     private var path: Path
