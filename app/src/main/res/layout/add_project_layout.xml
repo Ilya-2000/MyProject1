@@ -10,6 +10,7 @@
         android:layout_width="170dp"
         android:layout_height="200dp"
         app:cardCornerRadius="10dp"
+        android:layout_margin="8dp"
         android:id="@+id/add_project_layout">
 
         <androidx.constraintlayout.widget.ConstraintLayout

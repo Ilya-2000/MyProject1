@@ -2,6 +2,7 @@ package com.example.myproject1.ui.library
 
 import android.app.Application
 import androidx.lifecycle.*
+import com.example.myproject1.LoadingState
 import com.example.myproject1.data.DatabaseBuilder
 import com.example.myproject1.data.Project
 import com.example.myproject1.data.ProjectRepository
@@ -14,16 +15,25 @@ class LibraryViewModel(application: Application) : AndroidViewModel(application)
     val projectListLiveData: LiveData<List<Project>>
     get() = _projectListLiveData
 
+    private val _loadingStateLiveData = MutableLiveData<LoadingState>()
+    val loadingStateLiveData : LiveData<LoadingState>
+    get() = _loadingStateLiveData
+
     init {
         repository = ProjectRepository(DatabaseBuilder.getInstance(application))
+        getProjectList()
     }
 
-    fun setProjectList() {
-        viewModelScope.launch {
+    private fun getProjectList() {
+        viewModelScope.launch() {
+            _loadingStateLiveData.value = LoadingState.LOADING
             try {
                 _projectListLiveData.value = repository.getAllProject()
+                println(_projectListLiveData.value)
+                _loadingStateLiveData.value = LoadingState.LOADED
             } catch (e: Exception) {
                 println(e)
+                _loadingStateLiveData.value = LoadingState.error(e.message)
             }
 
         }

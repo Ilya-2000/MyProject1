@@ -1,5 +1,6 @@
 package com.example.myproject1.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +12,7 @@ import com.example.myproject1.databinding.AddProjectLayoutBinding
 import com.example.myproject1.databinding.PlateBinding
 
 
-class LibraryRecyclerAdapter(private val projectList: List<Project>, private val onItemClickListener: OnItemClickListener): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class LibraryRecyclerAdapter(private val projectList: ArrayList<Project>, private val onItemClickListener: OnItemClickListener): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
         const val VIEW_TYPE_ONE = 1
         const val VIEW_TYPE_TWO = 2
@@ -33,10 +34,13 @@ class LibraryRecyclerAdapter(private val projectList: List<Project>, private val
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if(position == 0) {
+            Log.d("Adapter1", "position $position projectSize: ${projectList.size}")
             (holder as AddProjectViewHolder).bind(onItemClickListener)
 
+
         } else {
-            (holder as ProjectViewHolder).bind(position, onItemClickListener)
+            Log.d("Adapter2", "position $position projectSize: ${projectList.size}")
+            (holder as ProjectViewHolder).bind(position, onItemClickListener, projectList[position - 1])
         }
     }
 
@@ -50,7 +54,8 @@ class LibraryRecyclerAdapter(private val projectList: List<Project>, private val
     override fun getItemCount(): Int = projectList.size + 1
 
     private inner class ProjectViewHolder(private val plateBinding: PlateBinding): RecyclerView.ViewHolder(plateBinding.root) {
-        fun bind(position: Int, onItemClickListener: OnItemClickListener) = with(plateBinding) {
+        fun bind(position: Int, onItemClickListener: OnItemClickListener, item: Project) = with(plateBinding) {
+            plateBinding.name = item.name
             plateBinding.root.setOnClickListener {
                 onItemClickListener.onItemClick(position, projectList)
             }
@@ -68,6 +73,8 @@ class LibraryRecyclerAdapter(private val projectList: List<Project>, private val
         fun onItemClick(position: Int, projectList: List<Project>)
     }
 
-
+    fun addProjects(data: List<Project>) {
+        projectList.addAll(data)
+    }
 
 }

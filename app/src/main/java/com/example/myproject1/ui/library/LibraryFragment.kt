@@ -13,6 +13,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myproject1.LoadingState
 import com.example.myproject1.R
 import com.example.myproject1.adapters.LibraryRecyclerAdapter
 import com.example.myproject1.data.Project
@@ -31,6 +32,8 @@ class LibraryFragment : Fragment(), LibraryRecyclerAdapter.OnItemClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setupViewModel()
+        setupUI()
     }
 
     override fun onCreateView(
@@ -38,14 +41,27 @@ class LibraryFragment : Fragment(), LibraryRecyclerAdapter.OnItemClickListener {
         savedInstanceState: Bundle?
     ): View? {
         navController = findNavController()
-        viewModel = ViewModelProvider(this).get(LibraryViewModel::class.java)
         val binding = LibraryFragmentBinding.inflate(inflater, container, false)
         recyclerView = binding.projectsLibraryRecyclerview
         recyclerView.layoutManager = GridLayoutManager(context, 1)
-        adapter = LibraryRecyclerAdapter(emptyList(), this)
-        viewModel.projectListLiveData.observe(viewLifecycleOwner, Observer {
+        /*viewModel.projectListLiveData.observe(viewLifecycleOwner, Observer {
             adapter = LibraryRecyclerAdapter(it, this)
+            println("viewModel.projectListLiveData: $it")
 
+        })*/
+
+        viewModel.loadingStateLiveData.observe(viewLifecycleOwner, Observer {
+            when(it.status) {
+                LoadingState.Status.FAILED -> {
+                    setupUI()
+                }
+                LoadingState.Status.RUNNING -> {
+                    Log.d("Status", "Loading...")
+                }
+                LoadingState.Status.SUCCESS -> {
+                    renderList(viewModel.projectListLiveData.value!!)
+                }
+            }
         })
         recyclerView.adapter = adapter
 
@@ -62,11 +78,24 @@ class LibraryFragment : Fragment(), LibraryRecyclerAdapter.OnItemClickListener {
 
         } else {
             sharingDataViewModel.isNewProject.value = false
-            sharingDataViewModel.setProjectLiveData(projectList[position])
+            sharingDataViewModel.setProjectLiveData(projectList[position - 1])
             sharingDataViewModel.setCountProjectLiveData(projectList.size)
         }
         navController.navigate(R.id.action_libraryFragment_to_drawingFragment)
         Log.d(TAG, "Click for transaction between fragments")
+    }
+
+    private fun setupViewModel() {
+        viewModel = ViewModelProvider(this).get(LibraryViewModel::class.java)
+    }
+
+    private fun renderList(data: List<Project>) {
+        adapter.addProjects(data)
+        adapter.notifyDataSetChanged()
+    }
+
+    private fun setupUI() {
+        adapter = LibraryRecyclerAdapter(arrayListOf(), this)
     }
 
 
