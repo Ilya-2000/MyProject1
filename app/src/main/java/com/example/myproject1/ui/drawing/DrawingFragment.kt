@@ -3,6 +3,7 @@ package com.example.myproject1.ui.drawing
 import android.content.Context
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,18 +13,15 @@ import androidx.databinding.DataBindingUtil
 import com.example.myproject1.CustomCanvas
 import com.example.myproject1.R
 import com.example.myproject1.databinding.DrawingFragmentBinding
-import java.io.FileInputStream
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
-import android.graphics.Bitmap.CompressFormat
-
-import android.os.Environment
+import androidx.lifecycle.ViewModelProvider
 import java.io.File
+import java.io.FileOutputStream
 import java.lang.Exception
 
 
 class DrawingFragment : Fragment() {
     private lateinit var customCanvas: CustomCanvas
+    private lateinit var viewModel: DrawingViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +34,9 @@ class DrawingFragment : Fragment() {
     ): View? {
         customCanvas = CustomCanvas(context, 30f)
         val binding = DrawingFragmentBinding.inflate(inflater, container, false)
+        viewModel =
+            ViewModelProvider(this).get(DrawingViewModel::class.java)
+
         binding.canvasLayout.addView(customCanvas)
 
         binding.undoImageButton.setOnClickListener {
@@ -57,22 +58,13 @@ class DrawingFragment : Fragment() {
             binding.canvasLayout.setDrawingCacheEnabled(true)
             binding.canvasLayout.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH)
             val bitmap: Bitmap = binding.canvasLayout.getDrawingCache()
-            val path = Environment.getExternalStorageDirectory().absolutePath
-            val file = File("$path/image.png")
-            val ostream: FileOutputStream
-            try {
-                file.createNewFile()
-                ostream = FileOutputStream(file)
-                bitmap.compress(CompressFormat.PNG, 100, ostream)
-                ostream.flush()
-                ostream.close()
-                println("save success")
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
+            viewModel.saveImage(bitmap)
         }
         return binding.root
     }
+
+
+
 
 
 }
