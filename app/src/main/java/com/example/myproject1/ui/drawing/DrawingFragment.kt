@@ -26,11 +26,11 @@ class DrawingFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        checkingProject()
         customCanvas = CustomCanvas(context, 30f)
         val binding = DrawingFragmentBinding.inflate(inflater, container, false)
         viewModel =
             ViewModelProvider(this).get(DrawingViewModel::class.java)
+        checkingProject()
 
         binding.canvasLayout.addView(customCanvas)
 

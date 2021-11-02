@@ -42,10 +42,12 @@ class LibraryFragment : Fragment(), LibraryRecyclerAdapter.OnItemClickListener {
         val binding = LibraryFragmentBinding.inflate(inflater, container, false)
         recyclerView = binding.projectsLibraryRecyclerview
         recyclerView.layoutManager = GridLayoutManager(context, 1)
+        adapter = LibraryRecyclerAdapter(emptyList(), this)
         viewModel.projectListLiveData.observe(viewLifecycleOwner, Observer {
             adapter = LibraryRecyclerAdapter(it, this)
-            recyclerView.adapter = adapter
+
         })
+        recyclerView.adapter = adapter
 
 
         return binding.root
@@ -56,11 +58,12 @@ class LibraryFragment : Fragment(), LibraryRecyclerAdapter.OnItemClickListener {
     override fun onItemClick(position: Int, projectList: List<Project>) {
         if (position == 0) {
             sharingDataViewModel.isNewProject.value = true
+            sharingDataViewModel.setCountProjectLiveData(projectList.size)
 
         } else {
             sharingDataViewModel.isNewProject.value = false
-           sharingDataViewModel.setProjectLiveData(projectList[position])
-           sharingDataViewModel.setCountProjectLiveData(position)
+            sharingDataViewModel.setProjectLiveData(projectList[position])
+            sharingDataViewModel.setCountProjectLiveData(projectList.size)
         }
         navController.navigate(R.id.action_libraryFragment_to_drawingFragment)
         Log.d(TAG, "Click for transaction between fragments")

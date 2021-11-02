@@ -18,9 +18,11 @@ class SharingDataViewModel : ViewModel() {
 
     fun setProjectLiveData(data: Project) {
         _projectLiveData.value = data
+        println("setCountProjectLiveData $data")
     }
 
     fun setCountProjectLiveData(data: Int) {
         _projectCountLiveData.value = data
+        println("setCountProjectLiveData $data")
     }
 }

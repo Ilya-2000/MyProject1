@@ -49,7 +49,8 @@ class DrawingViewModel(application: Application) : AndroidViewModel(application)
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, os)
                 os.flush()
                 os.close()
-                val id = _projectsCountLiveData.value?.plus(1)
+                val count = _projectsCountLiveData.value
+                val id = 1 + count!!
                 _currentProjectLiveData.value = Project((id!!), "Мой проект $id", path)
                 saveProjectInDatabase()
                 println("save success")
@@ -82,6 +83,7 @@ class DrawingViewModel(application: Application) : AndroidViewModel(application)
 
     fun setProjectsCount(int: Int) {
         _projectsCountLiveData.value = int
+        println("setProjectsCount $int")
     }
 
     fun setCurrentProject(project: Project) {

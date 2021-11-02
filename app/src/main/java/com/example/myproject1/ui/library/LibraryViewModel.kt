@@ -1,13 +1,12 @@
 package com.example.myproject1.ui.library
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.example.myproject1.data.DatabaseBuilder
 import com.example.myproject1.data.Project
 import com.example.myproject1.data.ProjectRepository
+import kotlinx.coroutines.launch
+import java.lang.Exception
 
 class LibraryViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: ProjectRepository
@@ -19,8 +18,16 @@ class LibraryViewModel(application: Application) : AndroidViewModel(application)
         repository = ProjectRepository(DatabaseBuilder.getInstance(application))
     }
 
-    fun setProjectList(data: List<Project>) {
-        _projectListLiveData.value = data
+    fun setProjectList() {
+        viewModelScope.launch {
+            try {
+                _projectListLiveData.value = repository.getAllProject()
+            } catch (e: Exception) {
+                println(e)
+            }
+
+        }
+
     }
 
 
