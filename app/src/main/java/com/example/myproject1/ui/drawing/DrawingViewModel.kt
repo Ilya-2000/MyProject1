@@ -58,30 +58,12 @@ class DrawingViewModel(application: Application) : AndroidViewModel(application)
                 os.close()
                 _currentProjectLiveData.value = Project((id), "Мой проект $id", imageName, path)
                 saveProjectInDatabase()
-                println("save success")
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
 
-
-    fun getDataFromFileExternal(): Bitmap? {
-        var bitmap: Bitmap? = null
-        try {
-            val imageName =
-                _currentProjectLiveData.value?.path + "/" + _currentProjectLiveData.value?.imageName
-            val path = Environment.getExternalStorageDirectory().absolutePath
-            val file = File("$path/$imageName")
-            val options = BitmapFactory.Options()
-            options.inPreferredConfig = Bitmap.Config.ARGB_8888
-            bitmap = BitmapFactory.decodeFile("$path/$imageName", options)
-        } catch (e: Exception) {
-            println(e)
-        }
-        println("get data from external file")
-        return bitmap
-    }
 
     private fun saveProjectInDatabase() {
         viewModelScope.launch {
@@ -92,14 +74,6 @@ class DrawingViewModel(application: Application) : AndroidViewModel(application)
             }
 
         }
-
-    }
-
-    fun saveDataInternal() {
-
-    }
-
-    fun getDataInternal() {
 
     }
 

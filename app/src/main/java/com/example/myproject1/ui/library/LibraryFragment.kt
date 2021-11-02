@@ -13,17 +13,15 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myproject1.LoadingState
+import com.example.myproject1.utils.LoadingState
 import com.example.myproject1.R
 import com.example.myproject1.adapters.LibraryRecyclerAdapter
 import com.example.myproject1.data.Project
 import com.example.myproject1.databinding.LibraryFragmentBinding
-import com.example.myproject1.ui.SharingDataViewModel
-import com.example.myproject1.ui.drawing.DrawingViewModel
+import com.example.myproject1.data.SharingDataViewModel
 
 
 class LibraryFragment : Fragment(), LibraryRecyclerAdapter.OnItemClickListener {
-    private val TAG = "LibraryFragment"
     private lateinit var navController: NavController
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: LibraryRecyclerAdapter
@@ -78,7 +76,6 @@ class LibraryFragment : Fragment(), LibraryRecyclerAdapter.OnItemClickListener {
             sharingDataViewModel.setCountProjectLiveData(projectList.size)
         }
         navController.navigate(R.id.action_libraryFragment_to_drawingFragment)
-        Log.d(TAG, "Click for transaction between fragments")
     }
 
     private fun setupViewModel() {

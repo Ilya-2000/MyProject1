@@ -13,7 +13,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.myproject1.R
-import com.example.myproject1.ui.SharingDataViewModel
+import com.example.myproject1.data.SharingDataViewModel
 
 
 class DrawingFragment : Fragment() {
@@ -75,11 +75,6 @@ class DrawingFragment : Fragment() {
         }
 
         binding.saveBtn.setOnClickListener {
-            //binding.canvasLayout.isDrawingCacheEnabled = true
-            //binding.canvasLayout.setDrawingCacheEnabled(true)
-            //binding.canvasLayout.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH)
-            //val bitmap: Bitmap = binding.canvasLayout.getDrawingCache()
-            //viewModel.saveImageExternal(bitmap)
             navController.navigate(R.id.action_drawingFragment_to_libraryFragment)
         }
 

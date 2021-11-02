@@ -5,7 +5,7 @@ import android.graphics.*
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewConfiguration
-import com.example.myproject1.models.PathModel
+import com.example.myproject1.data.models.PathModel
 
 class CustomCanvas(context: Context?, userStrokeWidth: Float) : View(context) {
     private var path: Path

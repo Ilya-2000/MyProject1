@@ -2,7 +2,7 @@ package com.example.myproject1.ui.library
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.example.myproject1.LoadingState
+import com.example.myproject1.utils.LoadingState
 import com.example.myproject1.data.DatabaseBuilder
 import com.example.myproject1.data.Project
 import com.example.myproject1.data.ProjectRepository

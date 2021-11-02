@@ -1,4 +1,4 @@
-package com.example.myproject1.models
+package com.example.myproject1.data.models
 
 import android.graphics.Path
 
