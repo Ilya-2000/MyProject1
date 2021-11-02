@@ -6,11 +6,12 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myproject1.R
+import com.example.myproject1.data.Project
 import com.example.myproject1.databinding.AddProjectLayoutBinding
 import com.example.myproject1.databinding.PlateBinding
 
 
-class LibraryRecyclerAdapter(private val onItemClickListener: OnItemClickListener): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class LibraryRecyclerAdapter(private val projectList: List<Project>, private val onItemClickListener: OnItemClickListener): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
         const val VIEW_TYPE_ONE = 1
         const val VIEW_TYPE_TWO = 2
@@ -46,14 +47,12 @@ class LibraryRecyclerAdapter(private val onItemClickListener: OnItemClickListene
         }
     }
 
-    override fun getItemCount(): Int {
-        return 1
-    }
+    override fun getItemCount(): Int = projectList.size + 1
 
     private inner class ProjectViewHolder(private val plateBinding: PlateBinding): RecyclerView.ViewHolder(plateBinding.root) {
         fun bind(position: Int, onItemClickListener: OnItemClickListener) = with(plateBinding) {
             plateBinding.root.setOnClickListener {
-                onItemClickListener.onItemClick(position)
+                onItemClickListener.onItemClick(position, projectList)
             }
         }
     }
@@ -61,12 +60,12 @@ class LibraryRecyclerAdapter(private val onItemClickListener: OnItemClickListene
     private inner class AddProjectViewHolder(private val addProjectLayoutBinding: AddProjectLayoutBinding): RecyclerView.ViewHolder(addProjectLayoutBinding.root) {
         fun bind(onItemClickListener: OnItemClickListener) = with(addProjectLayoutBinding) {
             addProjectLayoutBinding.root.setOnClickListener {
-                onItemClickListener.onItemClick(0)
+                onItemClickListener.onItemClick(0, projectList)
             }
         }
     }
     interface OnItemClickListener {
-        fun onItemClick(position: Int)
+        fun onItemClick(position: Int, projectList: List<Project>)
     }
 
 
