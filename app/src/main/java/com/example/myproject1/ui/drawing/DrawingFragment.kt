@@ -9,10 +9,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.example.myproject1.databinding.DrawingFragmentBinding
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
+import com.example.myproject1.R
 import com.example.myproject1.ui.SharingDataViewModel
 
 
 class DrawingFragment : Fragment() {
+    private lateinit var navController: NavController
     private lateinit var customCanvas: CustomCanvas
     private lateinit var viewModel: DrawingViewModel
     private val sharingDataViewModel: SharingDataViewModel by activityViewModels()
@@ -26,6 +30,7 @@ class DrawingFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        navController = findNavController()
         customCanvas = CustomCanvas(context, 30f)
         val binding = DrawingFragmentBinding.inflate(inflater, container, false)
         viewModel =
@@ -54,6 +59,7 @@ class DrawingFragment : Fragment() {
             binding.canvasLayout.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH)
             val bitmap: Bitmap = binding.canvasLayout.getDrawingCache()
             viewModel.saveImage(bitmap)
+            navController.navigate(R.id.action_drawingFragment_to_libraryFragment)
         }
         return binding.root
     }
