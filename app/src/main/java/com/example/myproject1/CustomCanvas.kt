@@ -6,6 +6,9 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewConfiguration
+import java.io.File
+import java.io.FileOutputStream
+import java.lang.Exception
 
 class CustomCanvas(context: Context?, userStrokeWidth: Float) : View(context) {
     private var path: Path
@@ -20,6 +23,7 @@ class CustomCanvas(context: Context?, userStrokeWidth: Float) : View(context) {
     private var selectWidth: Float
     private var paint: Paint
     private lateinit var extraBitmap: Bitmap
+    private var bitmapPaint = Paint(Paint.DITHER_FLAG)
 
 
 
@@ -47,7 +51,7 @@ class CustomCanvas(context: Context?, userStrokeWidth: Float) : View(context) {
             paint.color = p.color
             paint.strokeWidth = p.width
             canvas?.drawPath(p.path, paint)
-            //canvas?.drawBitmap(extraBitmap, 0f, 0f, null)
+            canvas?.drawBitmap(extraBitmap, 0f, 0f, bitmapPaint)
         }
 
     }
@@ -81,7 +85,6 @@ class CustomCanvas(context: Context?, userStrokeWidth: Float) : View(context) {
     }
 
     private fun touchUp() {
-        //path.lineTo(curX, curY)
 
 
     }
@@ -119,6 +122,5 @@ class CustomCanvas(context: Context?, userStrokeWidth: Float) : View(context) {
         selectColor = Color.WHITE
 
     }
-
 
 }
