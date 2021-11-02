@@ -8,5 +8,6 @@ import androidx.room.PrimaryKey
 data class Project(
     @PrimaryKey val id: Int,
     @ColumnInfo(name = "name") val name: String,
+    @ColumnInfo(name = "image_name") val imageName: String,
     @ColumnInfo(name = "path") val path: String
 )

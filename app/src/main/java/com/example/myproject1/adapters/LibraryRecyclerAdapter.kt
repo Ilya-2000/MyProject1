@@ -60,7 +60,7 @@ class LibraryRecyclerAdapter(private val projectList: ArrayList<Project>, privat
             plateBinding.name = item.name
             Log.d("PlateName", item.name)
             Glide.with(context)
-                .load(item.path + "/" + item.id)
+                .load(item.path + "/" + item.imageName)
                 .into(plateBinding.plateImg)
             plateBinding.root.setOnClickListener {
                 onItemClickListener.onItemClick(position, projectList)

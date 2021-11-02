@@ -40,8 +40,11 @@ class DrawingViewModel(application: Application) : AndroidViewModel(application)
                 println(e)
             }
         } else {
+            val count = _projectsCountLiveData.value
+            val id = 1 + count!!
+            val imageName = "image$id.png"
             val path = Environment.getExternalStorageDirectory().absolutePath
-            val file = File("$path/image.png")
+            val file = File("$path/$imageName")
             val os: FileOutputStream
             try {
                 file.createNewFile()
@@ -49,9 +52,7 @@ class DrawingViewModel(application: Application) : AndroidViewModel(application)
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, os)
                 os.flush()
                 os.close()
-                val count = _projectsCountLiveData.value
-                val id = 1 + count!!
-                _currentProjectLiveData.value = Project((id!!), "Мой проект $id", path)
+                _currentProjectLiveData.value = Project((id), "Мой проект $id", imageName, path)
                 saveProjectInDatabase()
                 println("save success")
             } catch (e: Exception) {
