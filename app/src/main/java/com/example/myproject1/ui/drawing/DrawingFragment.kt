@@ -6,13 +6,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import com.example.myproject1.databinding.DrawingFragmentBinding
 import androidx.lifecycle.ViewModelProvider
+import com.example.myproject1.ui.SharingDataViewModel
 
 
 class DrawingFragment : Fragment() {
     private lateinit var customCanvas: CustomCanvas
     private lateinit var viewModel: DrawingViewModel
+    private val sharingDataViewModel: SharingDataViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +26,7 @@ class DrawingFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        checkingProject()
         customCanvas = CustomCanvas(context, 30f)
         val binding = DrawingFragmentBinding.inflate(inflater, container, false)
         viewModel =
@@ -52,6 +56,17 @@ class DrawingFragment : Fragment() {
             viewModel.saveImage(bitmap)
         }
         return binding.root
+    }
+
+    private fun checkingProject() {
+        if(sharingDataViewModel.isNewProject.value == true) {
+            sharingDataViewModel.projectCountLiveData.value?.let { viewModel.setProjectsCount(it) }
+        } else {
+            sharingDataViewModel.projectCountLiveData.value?.let { viewModel.setProjectsCount(it) }
+            sharingDataViewModel.projectLiveData.value?.let { viewModel.setCurrentProject(it) }
+            viewModel.setProjectExists(true)
+            viewModel.getDataFromFile()
+        }
     }
 
 
