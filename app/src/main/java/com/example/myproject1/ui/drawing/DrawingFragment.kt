@@ -30,8 +30,8 @@ class DrawingFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        navController = findNavController()
         customCanvas = CustomCanvas(context, 30f)
+        navController = findNavController()
         val binding = DrawingFragmentBinding.inflate(inflater, container, false)
         viewModel =
             ViewModelProvider(this).get(DrawingViewModel::class.java)
@@ -54,12 +54,21 @@ class DrawingFragment : Fragment() {
         }
 
         binding.saveBtn.setOnClickListener {
+            //binding.canvasLayout.isDrawingCacheEnabled = true
+            //binding.canvasLayout.setDrawingCacheEnabled(true)
+            //binding.canvasLayout.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH)
+            //val bitmap: Bitmap = binding.canvasLayout.getDrawingCache()
+            //viewModel.saveImageExternal(bitmap)
+            navController.navigate(R.id.action_drawingFragment_to_libraryFragment)
+        }
+
+        binding.shareBtn.setOnClickListener {
             binding.canvasLayout.isDrawingCacheEnabled = true
             binding.canvasLayout.setDrawingCacheEnabled(true)
             binding.canvasLayout.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH)
             val bitmap: Bitmap = binding.canvasLayout.getDrawingCache()
-            viewModel.saveImage(bitmap)
-            navController.navigate(R.id.action_drawingFragment_to_libraryFragment)
+            viewModel.saveImageExternal(bitmap)
+
         }
         return binding.root
     }
@@ -71,7 +80,8 @@ class DrawingFragment : Fragment() {
             sharingDataViewModel.projectCountLiveData.value?.let { viewModel.setProjectsCount(it) }
             sharingDataViewModel.projectLiveData.value?.let { viewModel.setCurrentProject(it) }
             viewModel.setProjectExists(true)
-            viewModel.getDataFromFile()
+            val bitmap = viewModel.getDataFromFileExternal()
+
         }
     }
 

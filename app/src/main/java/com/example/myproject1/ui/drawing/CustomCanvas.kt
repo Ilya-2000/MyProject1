@@ -44,12 +44,14 @@ class CustomCanvas(context: Context?, userStrokeWidth: Float) : View(context) {
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         canvas?.save()
-        for (p in paths) {
-            paint.color = p.color
-            paint.strokeWidth = p.width
-            canvas?.drawPath(p.path, paint)
-            canvas?.drawBitmap(extraBitmap, 0f, 0f, bitmapPaint)
-        }
+
+            for (p in paths) {
+                paint.color = p.color
+                paint.strokeWidth = p.width
+                canvas?.drawPath(p.path, paint)
+                canvas?.drawBitmap(extraBitmap, 0f, 0f, bitmapPaint)
+            }
+
 
     }
 
@@ -119,5 +121,6 @@ class CustomCanvas(context: Context?, userStrokeWidth: Float) : View(context) {
         selectColor = Color.WHITE
 
     }
+
 
 }

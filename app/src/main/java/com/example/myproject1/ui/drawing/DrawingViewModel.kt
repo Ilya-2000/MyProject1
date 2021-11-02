@@ -8,9 +8,12 @@ import com.example.myproject1.data.DatabaseBuilder
 import com.example.myproject1.data.Project
 import com.example.myproject1.data.ProjectRepository
 import kotlinx.coroutines.launch
-import java.io.File
-import java.io.FileOutputStream
+import java.io.*
 import java.lang.Exception
+import android.graphics.BitmapFactory
+
+
+
 
 class DrawingViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: ProjectRepository
@@ -26,9 +29,10 @@ class DrawingViewModel(application: Application) : AndroidViewModel(application)
     }
 
 
-    fun saveImage(bitmap: Bitmap) {
+    fun saveImageExternal(bitmap: Bitmap) {
         if (_isProjectExistsLiveData.value == true) {
-            val file = File("${_currentProjectLiveData.value?.path}/image.png")
+            val imageName = _currentProjectLiveData.value?.imageName
+            val file = File("${_currentProjectLiveData.value?.path}/$imageName")
             val os: FileOutputStream
             try {
                 file.createNewFile()
@@ -62,8 +66,21 @@ class DrawingViewModel(application: Application) : AndroidViewModel(application)
     }
 
 
-    fun getDataFromFile() {
-        println("get data from file")
+    fun getDataFromFileExternal(): Bitmap? {
+        var bitmap: Bitmap? = null
+        try {
+            val imageName =
+                _currentProjectLiveData.value?.path + "/" + _currentProjectLiveData.value?.imageName
+            val path = Environment.getExternalStorageDirectory().absolutePath
+            val file = File("$path/$imageName")
+            val options = BitmapFactory.Options()
+            options.inPreferredConfig = Bitmap.Config.ARGB_8888
+            bitmap = BitmapFactory.decodeFile("$path/$imageName", options)
+        } catch (e: Exception) {
+            println(e)
+        }
+        println("get data from external file")
+        return bitmap
     }
 
     private fun saveProjectInDatabase() {
@@ -75,6 +92,14 @@ class DrawingViewModel(application: Application) : AndroidViewModel(application)
             }
 
         }
+
+    }
+
+    fun saveDataInternal() {
+
+    }
+
+    fun getDataInternal() {
 
     }
 
