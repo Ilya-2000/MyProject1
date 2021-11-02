@@ -11,6 +11,7 @@ import com.example.myproject1.databinding.DrawingFragmentBinding
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.example.myproject1.R
 import com.example.myproject1.ui.SharingDataViewModel
 
@@ -38,6 +39,26 @@ class DrawingFragment : Fragment() {
         checkingProject()
 
         binding.canvasLayout.addView(customCanvas)
+        if (!sharingDataViewModel.isNewProject.value!!) {
+            customCanvas.visibility = View.GONE
+            binding.shareBtn.visibility = View.GONE
+            binding.drawingToolsGroup.visibility = View.GONE
+            binding.redoImageButton.visibility = View.GONE
+            binding.undoImageButton.visibility = View.GONE
+            binding.completedImage.visibility = View.VISIBLE
+            val path = getPhotoPath()
+            Glide.with(this)
+                .load(path)
+                .into(binding.completedImage)
+
+        } else {
+            customCanvas.visibility = View.VISIBLE
+            binding.completedImage.visibility = View.GONE
+            binding.shareBtn.visibility = View.VISIBLE
+            binding.drawingToolsGroup.visibility = View.VISIBLE
+            binding.redoImageButton.visibility = View.VISIBLE
+            binding.undoImageButton.visibility = View.VISIBLE
+        }
 
         binding.undoImageButton.setOnClickListener {
             customCanvas.onUndoClick()
@@ -80,9 +101,11 @@ class DrawingFragment : Fragment() {
             sharingDataViewModel.projectCountLiveData.value?.let { viewModel.setProjectsCount(it) }
             sharingDataViewModel.projectLiveData.value?.let { viewModel.setCurrentProject(it) }
             viewModel.setProjectExists(true)
-            val bitmap = viewModel.getDataFromFileExternal()
-
         }
+    }
+
+    private fun getPhotoPath(): String {
+        return sharingDataViewModel.projectLiveData.value?.path + "/" + sharingDataViewModel.projectLiveData.value?.imageName
     }
 
 
