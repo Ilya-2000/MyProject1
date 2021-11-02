@@ -43,12 +43,8 @@ class LibraryFragment : Fragment(), LibraryRecyclerAdapter.OnItemClickListener {
         navController = findNavController()
         val binding = LibraryFragmentBinding.inflate(inflater, container, false)
         recyclerView = binding.projectsLibraryRecyclerview
-        recyclerView.layoutManager = GridLayoutManager(context, 1)
-        /*viewModel.projectListLiveData.observe(viewLifecycleOwner, Observer {
-            adapter = LibraryRecyclerAdapter(it, this)
-            println("viewModel.projectListLiveData: $it")
+        recyclerView.layoutManager = GridLayoutManager(context, 2)
 
-        })*/
 
         viewModel.loadingStateLiveData.observe(viewLifecycleOwner, Observer {
             when(it.status) {
